@@ -1,5 +1,7 @@
-import fr.kaplone.Default;
-import fr.kaplone.SeparatorEnum;
+package utils;
+
+import fr.kaplone.config.Default;
+import fr.kaplone.config.SeparatorEnum;
 import org.junit.Test;
 
 import java.util.Map;

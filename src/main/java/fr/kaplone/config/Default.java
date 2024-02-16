@@ -1,4 +1,4 @@
-import fr.kaplone.SeparatorEnum;
+package fr.kaplone.config;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,21 +10,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class TestDefault {
+public class Default {
 
     private final static String keySeparator = "app.separator.code";
     private final static String keyStringLength = "app.test.generator.string.length";
     public static final char SEPARATOR = SeparatorEnum.valueOf(readConfig().get(keySeparator)).getValue();
-    public static final int STRING_LENGTH= Integer.parseInt(readConfig().get(keyStringLength));
 
 
     public static Map<String, String> readConfig(){
-        String fileName = "src/test/resources/testSettings.cfg";
+        String fileName = "src/main/resources/settings.cfg";
         List<String> list = new ArrayList<>();
 
         try (BufferedReader br = Files.newBufferedReader(Paths.get(fileName))) {
-
-            //br returns as stream and convert it into a List
             list = br.lines().collect(Collectors.toList());
 
         } catch (IOException e) {

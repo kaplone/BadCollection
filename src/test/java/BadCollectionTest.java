@@ -1,6 +1,7 @@
-import fr.kaplone.BadCollection;
+import fr.kaplone.bad.BadCollection;
 import org.junit.Assert;
 import org.junit.Test;
+import utils.CoCollection;
 
 import java.util.ArrayList;
 import java.util.Iterator;

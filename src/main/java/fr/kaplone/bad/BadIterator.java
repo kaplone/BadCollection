@@ -1,4 +1,6 @@
-package fr.kaplone;
+package fr.kaplone.bad;
+
+import fr.kaplone.config.Default;
 
 import java.util.Iterator;
 

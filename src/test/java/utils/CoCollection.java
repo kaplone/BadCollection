@@ -1,4 +1,6 @@
-import fr.kaplone.BadCollection;
+package utils;
+
+import fr.kaplone.bad.BadCollection;
 
 import java.time.Instant;
 import java.util.*;

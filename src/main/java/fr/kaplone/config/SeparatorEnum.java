@@ -1,4 +1,4 @@
-package fr.kaplone;
+package fr.kaplone.config;
 
 public enum SeparatorEnum {
     NULL(0),

@@ -1,4 +1,6 @@
-package fr.kaplone;
+package fr.kaplone.bad;
+
+import fr.kaplone.config.Default;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -18,6 +20,14 @@ public class BadCollection<E> implements Iterable<E> {
 
     public void add(E value) {
         this.state += this.state.isEmpty() ? value.toString() : SEPARATOR + value.toString();
+    }
+
+    public String addByRef(E elem){
+        return "";
+    }
+
+    public String getByRef(String ref){
+        return null;
     }
 
     public BadCollection<E> concat(BadCollection<E> other) {
