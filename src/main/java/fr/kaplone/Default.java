@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Default {
 
@@ -21,9 +22,7 @@ public class Default {
         List<String> list = new ArrayList<>();
 
         try (BufferedReader br = Files.newBufferedReader(Paths.get(fileName))) {
-
-            //br returns as stream and convert it into a List
-            list = br.lines().toList();
+            list = br.lines().collect(Collectors.toList());
 
         } catch (IOException e) {
             e.printStackTrace();

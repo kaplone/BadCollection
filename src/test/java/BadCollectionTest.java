@@ -2,7 +2,9 @@ import fr.kaplone.BadCollection;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
@@ -115,6 +117,39 @@ public class BadCollectionTest {
         Assert.assertEquals(100, lc.getBadCollection().size());
         Assert.assertEquals(lc.getBadCollection().size(), lc.getList().size());
         assertEquals(lc.affBadCollection(), lc.affList());
+    }
+
+    @Test
+    public void quotesTest(){
+        BadCollection<String > lc = new BadCollection<>();
+        String quotes = '"' + "";
+        String multiQuotes = quotes+quotes+quotes+quotes+quotes+quotes+quotes+quotes;
+        lc.add(multiQuotes);
+        System.out.println(lc.affBadCollection());
+        List<String> list = new ArrayList<>();
+        list.add(multiQuotes);
+        String affList = String.join("\n", list);
+        System.out.println(affList);
+        assertEquals(affList, lc.affBadCollection());
+    }
+
+    @Test
+    public void escapeTest(){
+        BadCollection<String > lc = new BadCollection<>();
+        String escape = '\\' + "";
+        String doubleEscape = escape + escape;
+        String tripleEscape = escape + escape + escape;
+        lc.add(escape);
+        lc.add(doubleEscape);
+        lc.add(tripleEscape);
+        System.out.println(lc.affBadCollection());
+        List<String> list = new ArrayList<>();
+        list.add(escape);
+        list.add(doubleEscape);
+        list.add(tripleEscape);
+        String affList = String.join("\n", list);
+        System.out.println(affList);
+        assertEquals(affList, lc.affBadCollection());
     }
 
     @Test

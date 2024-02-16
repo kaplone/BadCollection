@@ -7,7 +7,7 @@ import java.util.stream.IntStream;
 
 public class CoCollection {
 
-    List<Character> letters = new ArrayList<>(IntStream.rangeClosed(32, 126).mapToObj(i -> (char) i).toList());
+    List<Character> letters = new ArrayList<>(IntStream.rangeClosed(32, 126).mapToObj(i -> (char) i).collect(Collectors.toList()));
     BadCollection<String> badCollection = new BadCollection<>();
     List<String> list = new ArrayList<>();
 
