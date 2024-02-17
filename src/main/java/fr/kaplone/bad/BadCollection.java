@@ -2,7 +2,6 @@ package fr.kaplone.bad;
 
 import fr.kaplone.config.Default;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -75,7 +74,12 @@ public class BadCollection<E> implements Iterable<E> {
     }
 
     public int size() {
-        return (int) Arrays.stream(state.split(SEPARATOR + "")).filter(s -> !s.isEmpty()).count();
+        int i = 0;
+
+        for(String s : state.split(SEPARATOR + "")){
+            if (!s.isEmpty()) i ++;
+        }
+        return i;
     }
 
     public boolean isEmpty(){
