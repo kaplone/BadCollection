@@ -273,6 +273,18 @@ public class BadCollectionTest {
     }
 
     @Test
+    public void filterInPlace(){
+        CoCollection lc = new CoCollection(100);
+
+        lc.getBadCollection().filterInPlace(e -> e.contains("4"));
+        lc.getList().removeIf(e -> e.contains("4"));
+
+        assertTrue(100 > lc.getBadCollection().size());
+        assertEquals(lc.affList(), lc.affBadCollection());
+
+    }
+
+    @Test
     public void filterTest(){
         int size = 2743;
         CoCollection coCollection = new CoCollection(size);

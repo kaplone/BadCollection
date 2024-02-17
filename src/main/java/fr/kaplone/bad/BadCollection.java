@@ -4,7 +4,6 @@ import fr.kaplone.config.Default;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -22,14 +21,6 @@ public class BadCollection<E> implements Iterable<E> {
 
     public void add(E value) {
         this.state += this.state.isEmpty() ? value.toString() : SEPARATOR + value.toString();
-    }
-
-    public String addByRef(E elem){
-        return elem.hashCode() + "";
-    }
-
-    public String getByRef(String ref){
-        return null;
     }
 
     public void concatInPlace(BadCollection<E> other) {
@@ -107,7 +98,7 @@ public class BadCollection<E> implements Iterable<E> {
         Iterator<E> it = this.iterator();
         while (it.hasNext()){
             E elem = it.next();
-            if (!predicate.test(elem)){
+            if (predicate.test(elem)){
                 this.remove(elem);
             }
         }
