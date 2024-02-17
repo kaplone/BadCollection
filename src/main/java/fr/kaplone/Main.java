@@ -1,7 +1,6 @@
 package fr.kaplone;
 
 import fr.kaplone.bad.BadCollection;
-import fr.kaplone.bad.BadGenericField;
 import fr.kaplone.model.Role;
 import fr.kaplone.model.User;
 
@@ -12,7 +11,6 @@ import java.util.List;
 public class Main {
 
 
-    @BadGenericField(cls = User.class, name = "User")
     static User user;
 
     public static void main(String[] args) {
@@ -24,7 +22,7 @@ public class Main {
 
         for (String name : names){
 
-            user = new User(name, Role.FISHER);
+            user = new User(name, Role.ADMIN);
             String ref = users.addByRef(user);
             usersRefs.add(ref);
             userList.add(user);

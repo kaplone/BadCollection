@@ -4,6 +4,7 @@ import org.junit.Test;
 import utils.CoCollection;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -95,6 +96,15 @@ public class BadCollectionTest {
     }
 
     @Test
+    public void reverseInPlace(){
+        CoCollection lc = new  CoCollection(15);
+        lc.getBadCollection().reverseInPlace();
+        Collections.reverse(lc.getList());
+        assertEquals(15, lc.getBadCollection().size());
+        assertEquals(lc.affBadCollection(), lc.affList());
+    }
+
+    @Test
     public void sizeOfEmpty(){
         BadCollection<String> lc = new BadCollection<>();
         assertEquals(0, lc.size());
@@ -118,6 +128,49 @@ public class BadCollectionTest {
         Assert.assertEquals(100, lc.getBadCollection().size());
         Assert.assertEquals(lc.getBadCollection().size(), lc.getList().size());
         assertEquals(lc.affBadCollection(), lc.affList());
+    }
+
+    @Test
+    public void concatInPlace() {
+        CoCollection lc = new  CoCollection(100);
+        CoCollection lc2 = new  CoCollection(15);
+        lc.getBadCollection().concatInPlace(lc2.getBadCollection());
+        lc.getList().addAll(lc2.getList());
+        assertEquals(115,  lc.getBadCollection().size());
+        assertEquals(lc.affBadCollection(), lc.affList());
+    }
+
+    @Test
+    public void concatWith() {
+        String elem = "ABCDE";
+        CoCollection lc = new CoCollection(100);
+        BadCollection<String> nouvelleBc = lc.getBadCollection().concatWith(elem);
+        List<String> nouvelleC = new ArrayList<>(lc.getList());
+        nouvelleC.add(elem);
+        assertEquals(100, lc.getBadCollection().size());
+        assertEquals(101, nouvelleBc.size());
+        assertEquals(nouvelleBc.affBadCollection(), String.join("\n", nouvelleC));
+    }
+
+    @Test
+    public void take_0_0(){
+        CoCollection lc = new CoCollection(0);
+        assertEquals(lc.getBadCollection().take(0).affBadCollection(),
+                lc.getList().stream().limit(0).collect(Collectors.joining("\n")));
+    }
+
+    @Test
+    public void take_100_10(){
+        CoCollection lc = new CoCollection(100);
+        assertEquals(lc.getBadCollection().take(10).affBadCollection(),
+                lc.getList().stream().limit(10).collect(Collectors.joining("\n")));
+    }
+
+    @Test
+    public void take_10_100(){
+        CoCollection lc = new CoCollection(10);
+        assertEquals(lc.getBadCollection().take(100).affBadCollection(),
+                lc.getList().stream().limit(100).collect(Collectors.joining("\n")));
     }
 
     @Test

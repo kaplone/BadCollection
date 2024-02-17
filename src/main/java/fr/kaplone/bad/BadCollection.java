@@ -23,22 +23,62 @@ public class BadCollection<E> implements Iterable<E> {
     }
 
     public String addByRef(E elem){
-        return "";
+        return elem.hashCode() + "";
     }
 
     public String getByRef(String ref){
         return null;
     }
 
-    public BadCollection<E> concat(BadCollection<E> other) {
+    public void concatInPlace(BadCollection<E> other) {
         for (E e : other) {
             this.add(e);
         }
-        return null;
+    }
+
+    public BadCollection<E> clone(boolean deepClone) {
+        BadCollection<E> tmp = new BadCollection<>();
+        for (E elem : this) {
+            if (deepClone) {
+                //TODO
+            }
+            else {
+                tmp.add(elem);
+            }
+        }
+        return tmp;
+    }
+
+    public BadCollection<E> concatWith(E other) {
+        BadCollection<E> tmp = this.clone(false);
+        tmp.add(other);
+        return tmp;
+    }
+
+    public BadCollection<E> concatWith(BadCollection<E> others) {
+        BadCollection<E> tmp = this.clone(false);
+        for (E e : others) {
+            tmp.add(e);
+        }
+        return tmp;
+    }
+
+    public void addAsHead(E elem){
+        this.state = this.state.isEmpty() ? elem.toString() : elem.toString() + SEPARATOR + this.state;
     }
 
     public BadCollection<E> reverse(){
         return null;
+    }
+
+    public void reverseInPlace(){
+        if (this.size() > 1){
+            BadCollection<E> tempBc = new BadCollection<>();
+            for (E elem : this){
+                tempBc.addAsHead(elem);
+            }
+            this.state = tempBc.state;
+        }
     }
 
     public int size() {
@@ -70,6 +110,20 @@ public class BadCollection<E> implements Iterable<E> {
     public BadCollection<E> tail(){
         return state.isEmpty() ? this : this.allNext();
     }
+
+    public BadCollection<E> take(int n){
+        return state.isEmpty() ? this : keepWhile(this, n, new BadCollection<>());
+    }
+
+    private BadCollection<E> keepWhile(BadCollection<E> current, int n, BadCollection<E> acc){
+        if (n == 0 || current.isEmpty()) return acc;
+        else return keepWhile(current.tail(), n - 1, acc.concatWith(current.head()));
+    }
+
+    public BadCollection<E> skip(int n){
+        return null;
+    }
+
 
     private BadCollection<E> allNext(){
         BadCollection<E> lc = new BadCollection<>();
