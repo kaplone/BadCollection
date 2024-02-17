@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
 
@@ -100,6 +101,15 @@ public class BadCollectionTest {
         CoCollection lc = new  CoCollection(15);
         lc.getBadCollection().reverseInPlace();
         Collections.reverse(lc.getList());
+        assertEquals(15, lc.getBadCollection().size());
+        assertEquals(lc.affBadCollection(), lc.affList());
+    }
+
+    @Test
+    public void reverseInPlace2(){
+        CoCollection lc = new  CoCollection(15);
+        lc.getBadCollection().reverseInPlace();
+        lc.getBadCollection().reverseInPlace();
         assertEquals(15, lc.getBadCollection().size());
         assertEquals(lc.affBadCollection(), lc.affList());
     }
@@ -225,6 +235,31 @@ public class BadCollectionTest {
         System.out.println(coCollection.getList().stream().filter(e -> e.contains(keep)).count());
         Assert.assertEquals(coCollection.getList().stream().filter(e -> e.contains(keep)).count(),
                      coCollection.getBadCollection().filter(e -> e.contains(keep)).size());
+    }
+
+    @Test
+    public void chaining(){
+        CoCollection lc = new CoCollection(100);
+
+        BadCollection<String> nouvelleBc = lc.getBadCollection()
+                .filter(e -> e.contains("7"))
+                .take(5)
+                .concatWith(lc.getBadCollection().filter(e -> e.contains("Y")).take(5))
+                .map(e -> e.replaceAll("Y", "+-+").replaceAll("7", "-+-"));
+
+        List<String> nouvelleC = Stream.concat(lc.getList()
+                        .stream()
+                        .filter(e -> e.contains("7"))
+                        .limit(5),
+                lc.getList()
+                        .stream()
+                        .filter(e -> e.contains("Y"))
+                        .limit(5))
+                .map(e -> e.replaceAll("Y", "+-+").replaceAll("7", "-+-"))
+                .collect(Collectors.toList());
+
+        assertEquals(nouvelleBc.affBadCollection(), String.join("\n", nouvelleC));
+
     }
 
 

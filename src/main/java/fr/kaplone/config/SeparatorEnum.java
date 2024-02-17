@@ -1,6 +1,7 @@
 package fr.kaplone.config;
 
 public enum SeparatorEnum {
+    OVER(-1), // 65535
     NULL(0),
     START_OF_HEADING(1),
     START_OF_TEXT(2),

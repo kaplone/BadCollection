@@ -17,15 +17,5 @@ public class Main {
 
         List<String> names = Arrays.asList("Alice", "Bob", "Charlie");
         BadCollection<User> users = new BadCollection<>();
-        BadCollection<String> usersRefs = new BadCollection<>();
-        List<User> userList = new ArrayList<>();
-
-        for (String name : names){
-
-            user = new User(name, Role.ADMIN);
-            String ref = users.addByRef(user);
-            usersRefs.add(ref);
-            userList.add(user);
-        }
     }
 }
