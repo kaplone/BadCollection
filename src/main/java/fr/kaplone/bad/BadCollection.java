@@ -99,12 +99,12 @@ public class BadCollection<E> implements Iterable<E> {
         while (it.hasNext()){
             E elem = it.next();
             if (predicate.test(elem)){
-                this.remove(elem);
+                this.removeInPlace(elem);
             }
         }
     }
 
-    public void remove(E value){
+    public void removeInPlace(E value){
         if (this.state.contains(value.toString() + SEPARATOR)) {
             this.state = this.state.replace(value.toString() + SEPARATOR, "");
         }
@@ -153,7 +153,7 @@ public class BadCollection<E> implements Iterable<E> {
         return lc;
     }
 
-    public void removeAll(E value){
+    public void removeAllInPlace(E value){
         if (this.state.contains(value.toString() + SEPARATOR)) {
             this.state = this.state.replaceAll(value.toString() + SEPARATOR, "");
         }

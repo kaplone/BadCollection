@@ -59,7 +59,7 @@ public class BadCollectionTest {
         lc.add("Four");
         lc.add("One");
 
-        lc.removeAll("One");
+        lc.removeAllInPlace("One");
 
         Iterator<String> it = lc.iterator();
 
@@ -83,7 +83,7 @@ public class BadCollectionTest {
         lc.add("FourPlusOne");
         lc.add("One");
 
-        lc.removeAll("One");
+        lc.removeAllInPlace("One");
 
         Iterator<String> it = lc.iterator();
 
@@ -259,7 +259,7 @@ public class BadCollectionTest {
                 .filter(e -> e.contains("8"))
                 .skip(3)
                 .take(1);
-        lc.getBadCollection().remove(toRemove.head());
+        lc.getBadCollection().removeInPlace(toRemove.head());
 
         List<String> toRemoveL = lc.getList().stream()
                 .filter(e -> e.contains("8"))
