@@ -103,6 +103,26 @@ public class BadCollection<E> implements Iterable<E> {
         return lc;
     }
 
+    public void filterInPlace(Predicate<E> predicate){
+        Iterator<E> it = this.iterator();
+        while (it.hasNext()){
+            E elem = it.next();
+            if (!predicate.test(elem)){
+                this.remove(elem);
+            }
+        }
+    }
+
+    public void remove(E value){
+        if (this.state.contains(value.toString() + SEPARATOR)) {
+            this.state = this.state.replace(value.toString() + SEPARATOR, "");
+        }
+
+        if (this.state.contains(SEPARATOR + value.toString())) {
+            this.state = this.state.replace(SEPARATOR + value.toString(), "");
+        }
+    }
+
 
 
     public E head(){
@@ -123,7 +143,12 @@ public class BadCollection<E> implements Iterable<E> {
     }
 
     public BadCollection<E> skip(int n){
-        return null;
+        return skipWhile(this, n);
+    }
+
+    private BadCollection<E> skipWhile(BadCollection<E> current, int n){
+        if (n == 0 || current.isEmpty()) return current;
+        else return skipWhile(current.tail(), n - 1);
     }
 
 

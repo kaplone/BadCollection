@@ -224,6 +224,55 @@ public class BadCollectionTest {
     }
 
     @Test
+    public void skip_0_0(){
+        CoCollection lc = new CoCollection(0);
+        assertEquals(lc.getBadCollection().skip(0).affBadCollection(),
+                String.join("\n", lc.getList().stream().skip(0).collect(Collectors.toList())));
+    }
+
+    @Test
+    public void skip_0_10(){
+        CoCollection lc = new CoCollection(0);
+        assertEquals(lc.getBadCollection().skip(10).affBadCollection(),
+                String.join("\n", lc.getList().stream().skip(10).collect(Collectors.toList())));
+    }
+
+    @Test
+    public void skip_10_0(){
+        CoCollection lc = new CoCollection(10);
+        assertEquals(lc.getBadCollection().skip(0).affBadCollection(),
+                String.join("\n", lc.getList().stream().skip(0).collect(Collectors.toList())));
+    }
+
+    @Test
+    public void skip_100_11(){
+        CoCollection lc = new CoCollection(100);
+        assertEquals(89, lc.getBadCollection().skip(11).size());
+        assertEquals(lc.getBadCollection().skip(11).affBadCollection(),
+                String.join("\n", lc.getList().stream().skip(11).collect(Collectors.toList())));
+    }
+
+    @Test
+    public void removeOne(){
+        CoCollection lc = new CoCollection(100);
+        BadCollection<String> toRemove = lc.getBadCollection()
+                .filter(e -> e.contains("8"))
+                .skip(3)
+                .take(1);
+        lc.getBadCollection().remove(toRemove.head());
+
+        List<String> toRemoveL = lc.getList().stream()
+                .filter(e -> e.contains("8"))
+                .skip(3)
+                .limit(1)
+                .collect(Collectors.toList());
+        lc.getList().remove(toRemoveL.get(0));
+
+        assertEquals(99, lc.getBadCollection().size());
+        assertEquals(lc.affBadCollection(), lc.affList());
+    }
+
+    @Test
     public void filterTest(){
         int size = 2743;
         CoCollection coCollection = new CoCollection(size);
@@ -259,8 +308,5 @@ public class BadCollectionTest {
                 .collect(Collectors.toList());
 
         assertEquals(nouvelleBc.affBadCollection(), String.join("\n", nouvelleC));
-
     }
-
-
 }
