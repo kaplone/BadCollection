@@ -109,8 +109,12 @@ public class BadCollection<E> implements Iterable<E> {
             this.state = this.state.replace(value.toString() + SEPARATOR, "");
         }
 
-        if (this.state.contains(SEPARATOR + value.toString())) {
+        else if (this.state.contains(SEPARATOR + value.toString())) {
             this.state = this.state.replace(SEPARATOR + value.toString(), "");
+        }
+
+        else if (this.state.contains(value.toString())) {
+            this.state = this.state.replace(value.toString(), "");
         }
     }
 
@@ -154,12 +158,22 @@ public class BadCollection<E> implements Iterable<E> {
     }
 
     public void removeAllInPlace(E value){
-        if (this.state.contains(value.toString() + SEPARATOR)) {
-            this.state = this.state.replaceAll(value.toString() + SEPARATOR, "");
+        if (this.state.startsWith(value.toString() + SEPARATOR)) {
+            this.state = this.state.replaceFirst(value.toString() + SEPARATOR, "");
         }
 
-        if (this.state.contains(SEPARATOR + value.toString())) {
-            this.state = this.state.replaceAll(SEPARATOR + value.toString(), "");
+        if (this.state.endsWith(SEPARATOR + value.toString())) {
+            this.reverseInPlace();
+            this.state = this.state.replaceFirst(value.toString() + SEPARATOR, "");
+            this.reverseInPlace();
+        }
+
+        if (this.state.contains(SEPARATOR + value.toString() + SEPARATOR)) {
+            this.state = this.state.replaceAll(SEPARATOR + value.toString() + SEPARATOR, SEPARATOR + "");
+        }
+
+        if (this.state.equals(value.toString())) {
+            this.state = "";
         }
     }
 

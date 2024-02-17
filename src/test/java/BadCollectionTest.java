@@ -50,6 +50,14 @@ public class BadCollectionTest {
     }
 
     @Test
+    public void removeAll_00() {
+        BadCollection<String> lc = new BadCollection<>();
+        lc.add("One");
+        lc.removeAllInPlace("One");
+        assertEquals(0, lc.size());
+    }
+
+    @Test
     public void removeAll_01() {
         BadCollection<String> lc = new BadCollection<>();
         lc.add("One");
@@ -76,6 +84,7 @@ public class BadCollectionTest {
     public void removeAll_02() {
         BadCollection<String> lc = new BadCollection<>();
         lc.add("One");
+        lc.add("OneAndQuarter");
         lc.add("OneAndHalf");
         lc.add("Two");
         lc.add("Three");
@@ -93,7 +102,7 @@ public class BadCollectionTest {
             result.append(it.next()).append("\n");
         }
 
-        assertEquals("OneAndHalf\nTwo\nThree\nFour\nFourPlusOne\n", result.toString());
+        assertEquals("OneAndQuarter\nOneAndHalf\nTwo\nThree\nFour\nFourPlusOne\n", result.toString());
     }
 
     @Test
@@ -117,6 +126,16 @@ public class BadCollectionTest {
     @Test
     public void sizeOfEmpty(){
         BadCollection<String> lc = new BadCollection<>();
+        assertEquals(0, lc.size());
+    }
+
+    @Test
+    public void sizeUpAndDownEmpty(){
+        BadCollection<String> lc = new BadCollection<>();
+        lc.add("UP");
+        assertEquals(1, lc.size());
+        lc.removeInPlace("UP");
+        lc.affBadCollection();
         assertEquals(0, lc.size());
     }
 
@@ -227,21 +246,21 @@ public class BadCollectionTest {
     public void skip_0_0(){
         CoCollection lc = new CoCollection(0);
         assertEquals(lc.getBadCollection().skip(0).affBadCollection(),
-                String.join("\n", lc.getList().stream().skip(0).collect(Collectors.toList())));
+                lc.getList().stream().skip(0).collect(Collectors.joining("\n")));
     }
 
     @Test
     public void skip_0_10(){
         CoCollection lc = new CoCollection(0);
         assertEquals(lc.getBadCollection().skip(10).affBadCollection(),
-                String.join("\n", lc.getList().stream().skip(10).collect(Collectors.toList())));
+                lc.getList().stream().skip(10).collect(Collectors.joining("\n")));
     }
 
     @Test
     public void skip_10_0(){
         CoCollection lc = new CoCollection(10);
         assertEquals(lc.getBadCollection().skip(0).affBadCollection(),
-                String.join("\n", lc.getList().stream().skip(0).collect(Collectors.toList())));
+                lc.getList().stream().skip(0).collect(Collectors.joining("\n")));
     }
 
     @Test
@@ -249,7 +268,7 @@ public class BadCollectionTest {
         CoCollection lc = new CoCollection(100);
         assertEquals(89, lc.getBadCollection().skip(11).size());
         assertEquals(lc.getBadCollection().skip(11).affBadCollection(),
-                String.join("\n", lc.getList().stream().skip(11).collect(Collectors.toList())));
+                lc.getList().stream().skip(11).collect(Collectors.joining("\n")));
     }
 
     @Test
