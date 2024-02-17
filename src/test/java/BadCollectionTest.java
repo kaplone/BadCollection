@@ -141,6 +141,13 @@ public class BadCollectionTest {
     }
 
     @Test
+    public void mapToupper(){
+        CoCollection lc = new  CoCollection(100);
+        assertEquals(lc.getBadCollection().map(String::toUpperCase).affBadCollection(),
+                     lc.getList().stream().map(String::toUpperCase).collect(Collectors.joining("\n")));
+    }
+
+    @Test
     public void concatWith() {
         String elem = "ABCDE";
         CoCollection lc = new CoCollection(100);

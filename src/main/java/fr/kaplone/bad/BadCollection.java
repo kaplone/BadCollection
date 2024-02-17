@@ -4,6 +4,8 @@ import fr.kaplone.config.Default;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class BadCollection<E> implements Iterable<E> {
@@ -145,7 +147,17 @@ public class BadCollection<E> implements Iterable<E> {
         }
     }
 
+    public <F> BadCollection<F> map(Function<? super E, ? extends F> mapper){
+        BadCollection<F> tmp = new BadCollection<>();
+        for (E elem : this){
+            tmp.add(mapper.apply(elem));
+        }
+
+        return tmp;
+    }
+
+
     public String affBadCollection(){
-        return String.join("\n", (BadCollection<String>)this);
+        return String.join("\n", this.map(Object::toString));
     }
 }
