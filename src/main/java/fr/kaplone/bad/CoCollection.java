@@ -1,6 +1,5 @@
 package fr.kaplone.bad;
 
-import fr.kaplone.bad.BadCollection;
 import fr.kaplone.RandomGeneration.RandomPassWord;
 import fr.kaplone.config.Default;
 

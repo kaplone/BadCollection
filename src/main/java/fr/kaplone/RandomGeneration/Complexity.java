@@ -4,11 +4,11 @@ import java.util.Arrays;
 
 public class Complexity {
 
-    private String value;
-    private int length;
-    private long position;
-    private double entropy;
-    private int score;
+    private final String value;
+    private final int length;
+    private final long position;
+    private final double entropy;
+    private final int score;
 
     public Complexity(String s){
         this.value = s;

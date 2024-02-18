@@ -1,6 +1,5 @@
 package fr.kaplone.bad;
 
-import fr.kaplone.RandomGeneration.Complexity;
 import fr.kaplone.config.Default;
 
 import java.util.Comparator;
