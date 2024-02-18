@@ -4,6 +4,9 @@ import java.util.Arrays;
 
 public class Complexity {
 
+    // https://www.uic.edu/apps/strong-password/
+    // https://en.wikipedia.org/wiki/Password_strength
+
     private final String value;
     private final int length;
     private final long position;
