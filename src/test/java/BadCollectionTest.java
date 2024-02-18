@@ -324,21 +324,23 @@ public class BadCollectionTest {
         List<String> ls = cc.getList();
 
         String resMax1 = ls.stream().map(Complexity::new)
-                .max(Comparator.comparing(Complexity::getScore))
+                .max(Comparator.comparing(Complexity::getScore).thenComparing(Complexity::getValue))
                 .map(a ->  "Max:: " + a.getValue() + " --> " + a.getScore()).get();
 
         String resMin1 = ls.stream().map(Complexity::new)
-                .min(Comparator.comparing(Complexity::getScore))
+                .min(Comparator.comparing(Complexity::getScore).thenComparing(Complexity::getValue))
                 .map(a -> "Min:: " + a.getValue() + " --> " + a.getScore()).get();
 
         System.out.println("---------------------------");
 
         BadCollection<String> bc = cc.getBadCollection();
 
-        String resMax2 = bc.max(Comparator.comparing(s -> new Complexity(s).getScore()))
+        String resMax2 = bc.max(Comparator.comparing(s -> new Complexity((String) s).getScore())
+                                      .thenComparing(c -> new Complexity((String) c).getValue()))
                 .map(a -> "Max:: " + a + " --> " + new Complexity(a).getScore()).get();
 
-        String resMin2 = bc.min(Comparator.comparing(s -> new Complexity(s).getScore()))
+        String resMin2 = bc.min(Comparator.comparing(s -> new Complexity((String) s).getScore())
+                                      .thenComparing(c -> new Complexity((String) c).getValue()))
                 .map(a -> "Min:: " + a + " --> " + new Complexity(a).getScore()).get();
 
         assertEquals(resMax1, resMax2);

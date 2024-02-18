@@ -10,6 +10,9 @@ public class Complexity {
     private final double entropy;
     private final int score;
 
+    private String bonus;
+    private String minus;
+
     public Complexity(String s){
         this.value = s;
         this.length = s.length();
@@ -35,7 +38,7 @@ public class Complexity {
         int number = (int) this.value.chars()
                 .filter(Character::isDigit)
                 .count();
-        int bonus_number = number > 0 ? (this.length - number) * 4 : 0;
+        int bonus_number = number > 0 ? number * 4 : 0;
         int symbol = (int) (this.length - this.value.chars()
                 .filter(Character::isLetterOrDigit)
                 .count());
@@ -51,17 +54,17 @@ public class Complexity {
                 (bonus_symbolOrDigit > 0 ? 1 : 0);
         int bonus_requirement = requirement >= 4 ? requirement * 2 : 0;
 
-//        System.out.println(bonus_letters + " " +
-//                bonus_upper + " " +
-//                bonus_lower + " " +
-//                bonus_number + " " +
-//                bonus_symbol + " " +
-//                bonus_symbolOrDigit + " " +
-//                bonus_requirement);
+        bonus = (bonus_letters + " " +
+                bonus_upper + " " +
+                bonus_lower + " " +
+                bonus_number + " " +
+                bonus_symbol + " " +
+                bonus_symbolOrDigit + " " +
+                bonus_requirement);
 
         int minus_letter_only = bonus_symbolOrDigit == 0 ? - this.length : 0;
         int minus_numbers_only = number == this.length ? - this.length : 0;
-        int minus_repeated = (this.length - (int) Arrays.stream(this.value.split("")).distinct().count()) * -5;
+        int minus_repeated = Math.max(0, this.length - (int) Arrays.stream(this.value.split("")).distinct().count()) * -5;
         int minus_consecutive = 0;
         Type type = Type.NONE;
         for (char c : this.value.toCharArray()){
@@ -71,30 +74,30 @@ public class Complexity {
                 }
                 type = Type.UPPER;
             }
-            if (Character.isLowerCase(c)){
+            else if (Character.isLowerCase(c)){
                 if (type == Type.LOWER){
                     minus_consecutive -= 2;
                 }
                 type = Type.LOWER;
             }
-            if (Character.isDigit(c)){
+            else if (Character.isDigit(c)){
                 if (type == Type.NUMBER){
                     minus_consecutive -= 2;
                 }
                 type = Type.NUMBER;
             }
             else {
-                if (type == Type.SYMBOL){
-                    minus_consecutive -= 2;
-                }
+//                if (type == Type.SYMBOL){
+//                    minus_consecutive -= 2;
+//                }
                 type = Type.SYMBOL;
             }
         }
 
-//        System.out.println(minus_letter_only + " " +
-//                minus_numbers_only + " " +
-//                minus_repeated + " " +
-//                minus_consecutive);
+        minus = (minus_letter_only + " " +
+                minus_numbers_only + " " +
+                minus_repeated + " " +
+                minus_consecutive);
 
         return (int) entropy +
                 bonus_letters +
@@ -139,6 +142,18 @@ public class Complexity {
 
     public int getScore() {
         return score;
+    }
+
+    public String getBonus() {
+        return bonus;
+    }
+
+    public String getGains(){
+        return getBonus() + "\n" + getMinus();
+    }
+
+    public String getMinus() {
+        return minus;
     }
 
     enum Type {UPPER, LOWER, NUMBER, SYMBOL, NONE;}
