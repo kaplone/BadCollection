@@ -1,5 +1,5 @@
 import org.junit.Test;
-import utils.CoCollection;
+import fr.kaplone.bad.CoCollection;
 
 import java.time.Duration;
 import java.time.Instant;

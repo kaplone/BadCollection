@@ -1,12 +1,10 @@
+import fr.kaplone.RandomGeneration.Complexity;
 import fr.kaplone.bad.BadCollection;
 import org.junit.Assert;
 import org.junit.Test;
-import utils.CoCollection;
+import fr.kaplone.bad.CoCollection;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -278,7 +276,10 @@ public class BadCollectionTest {
                 .filter(e -> e.contains("8"))
                 .skip(3)
                 .take(1);
-        lc.getBadCollection().removeInPlace(toRemove.head());
+        if(!toRemove.isEmpty()){
+            lc.getBadCollection().removeInPlace(toRemove.head().get());
+        }
+
 
         List<String> toRemoveL = lc.getList().stream()
                 .filter(e -> e.contains("8"))
@@ -315,6 +316,36 @@ public class BadCollectionTest {
         System.out.println(coCollection.getList().stream().filter(e -> e.contains(keep)).count());
         Assert.assertEquals(coCollection.getList().stream().filter(e -> e.contains(keep)).count(),
                      coCollection.getBadCollection().filter(e -> e.contains(keep)).size());
+    }
+
+    @Test
+    public void testSortedByComplexity(){
+        CoCollection cc = new CoCollection(100);
+        List<String> ls = cc.getList();
+
+        String resMax1 = ls.stream().map(Complexity::new)
+                .max(Comparator.comparing(Complexity::getScore))
+                .map(a ->  "Max:: " + a.getValue() + " --> " + a.getScore()).get();
+
+        String resMin1 = ls.stream().map(Complexity::new)
+                .min(Comparator.comparing(Complexity::getScore))
+                .map(a -> "Min:: " + a.getValue() + " --> " + a.getScore()).get();
+
+        System.out.println("---------------------------");
+
+        BadCollection<String> bc = cc.getBadCollection();
+
+        String resMax2 = bc.max(Comparator.comparing(s -> new Complexity(s).getScore()))
+                .map(a -> "Max:: " + a + " --> " + new Complexity(a).getScore()).get();
+
+        String resMin2 = bc.min(Comparator.comparing(s -> new Complexity(s).getScore()))
+                .map(a -> "Min:: " + a + " --> " + new Complexity(a).getScore()).get();
+
+        assertEquals(resMax1, resMax2);
+        assertEquals(resMin1, resMin2);
+
+        System.out.println(resMax2);
+        System.out.println(resMin2);
     }
 
     @Test

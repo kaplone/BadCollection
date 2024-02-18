@@ -1,33 +1,23 @@
-package utils;
+package fr.kaplone.bad;
 
 import fr.kaplone.bad.BadCollection;
+import fr.kaplone.RandomGeneration.RandomPassWord;
+import fr.kaplone.config.Default;
 
-import java.time.Instant;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class CoCollection {
 
-    List<Character> letters = new ArrayList<>(IntStream.rangeClosed(32, 126).mapToObj(i -> (char) i).collect(Collectors.toList()));
     BadCollection<String> badCollection = new BadCollection<>();
     List<String> list = new ArrayList<>();
 
     public CoCollection (int size){
 
         for (int i = 0; i < size; i++){
-            String string = newString();
+            String string = RandomPassWord.newString(Default.STRING_LENGTH);
             badCollection.add(string);
             list.add(string);
         }
-    }
-
-
-    public String newString(){
-        Collections.shuffle(letters);
-        Random random = new Random(Instant.now().toEpochMilli() + Instant.now().getNano());
-        int in = random.nextInt(94 - TestDefault.STRING_LENGTH);
-        return letters.subList(in, in + TestDefault.STRING_LENGTH).stream().map(Object::toString).collect(Collectors.joining());
     }
 
     public BadCollection<String> getBadCollection() {

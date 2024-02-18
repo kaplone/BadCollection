@@ -1,8 +1,11 @@
 package fr.kaplone.bad;
 
+import fr.kaplone.RandomGeneration.Complexity;
 import fr.kaplone.config.Default;
 
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -26,6 +29,14 @@ public class BadCollection<E> implements Iterable<E> {
         for (E e : other) {
             this.add(e);
         }
+    }
+
+    public boolean contains(){
+        return false;
+    }
+
+    public BadCollection<E> fillWith(E elem, int nb){
+        return new BadCollection<>();
     }
 
     public BadCollection<E> clone(boolean deepClone) {
@@ -60,7 +71,11 @@ public class BadCollection<E> implements Iterable<E> {
     }
 
     public BadCollection<E> reverse(){
-        return null;
+        BadCollection<E> tempBc = new BadCollection<>();
+        for (E elem : this){
+            tempBc.addAsHead(elem);
+        }
+        return tempBc;
     }
 
     public void reverseInPlace(){
@@ -124,8 +139,8 @@ public class BadCollection<E> implements Iterable<E> {
 
 
 
-    public E head(){
-        return state.isEmpty() ? null : this.iterator().next();
+    public Optional<E> head(){
+        return state.isEmpty() ? Optional.empty() : Optional.of(this.iterator().next());
     }
 
     public BadCollection<E> tail(){
@@ -138,7 +153,7 @@ public class BadCollection<E> implements Iterable<E> {
 
     private BadCollection<E> keepWhile(BadCollection<E> current, int n, BadCollection<E> acc){
         if (n == 0 || current.isEmpty()) return acc;
-        else return keepWhile(current.tail(), n - 1, acc.concatWith(current.head()));
+        else return keepWhile(current.tail(), n - 1, acc.concatWith(current.head().get()));
     }
 
     public BadCollection<E> skip(int n){
@@ -188,6 +203,46 @@ public class BadCollection<E> implements Iterable<E> {
         }
 
         return tmp;
+    }
+
+    public BadCollection<E> sorted(Comparator<? super E> comparator){
+        BadCollection<E> sorted = new BadCollection<>();
+        for (E elem : this){
+            Iterator<E> it = sorted.iterator();
+            int idx = 0;
+            if (it.hasNext()){
+                E next = it.next();
+                while (comparator.compare(elem, next) > 0){
+                    idx++;
+                    if (it.hasNext()){
+                        next = it.next();
+                    }
+                    else {
+                        break;
+                    }
+                }
+            }
+
+
+            sorted = sorted.addAt(idx, elem);
+        }
+        return sorted;
+    }
+
+    public BadCollection<E> addAt(int idx, E elem){
+        return slice(0, idx).concatWith(elem).concatWith(slice(idx, this.size()));
+    }
+
+    public BadCollection<E> slice(int from, int to){
+        return this.skip(from).take(to - from);
+    }
+
+    public Optional<E> min(Comparator<? super E> comparator){
+        return this.sorted(comparator).head();
+    }
+
+    public Optional<E> max(Comparator<? super E> comparator){
+        return this.sorted(comparator).reverse().head();
     }
 
 

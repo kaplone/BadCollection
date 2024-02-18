@@ -14,7 +14,12 @@ public class Default {
 
     private final static String keySeparator = "app.separator.code";
     private final static String keyStringLength = "app.test.generator.string.length";
+    private final static String keyStringMinValue = "app.test.generator.string.min.value";
+    private final static String keyStringMaxValue = "app.test.generator.string.max.value";
     public static final char SEPARATOR = SeparatorEnum.valueOf(readConfig().get(keySeparator)).getValue();
+    public static final int STRING_LENGTH = Integer.parseInt(readConfig().get(keyStringLength));
+    public static final int STRING_MIN_VALUE = Integer.parseInt(readConfig().get(keyStringMinValue));
+    public static final int STRING_MAX_VALUE = Integer.parseInt(readConfig().get(keyStringMaxValue));
 
 
     public static Map<String, String> readConfig(){
