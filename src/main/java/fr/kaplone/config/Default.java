@@ -1,7 +1,10 @@
 package fr.kaplone.config;
 
+import jdk.internal.loader.Resource;
+
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -21,14 +24,20 @@ public class Default {
     public static final int STRING_MIN_VALUE = Integer.parseInt(readConfig().get(keyStringMinValue));
     public static final int STRING_MAX_VALUE = Integer.parseInt(readConfig().get(keyStringMaxValue));
 
-
     public static Map<String, String> readConfig(){
-        String fileName = "src/main/resources/settings.cfg";
+
+        String fileName = "settings.cfg";
+        ClassLoader classLoader = Default.class.getClassLoader();
+        URL resource = classLoader.getResource(fileName);
+
         List<String> list = new ArrayList<>();
 
-        try (BufferedReader br = Files.newBufferedReader(Paths.get(fileName))) {
-            list = br.lines().collect(Collectors.toList());
+        try {
+            assert resource != null;
+            try (BufferedReader br = Files.newBufferedReader(Paths.get(resource.getPath()))) {
+                list = br.lines().collect(Collectors.toList());
 
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
