@@ -368,7 +368,7 @@ public class BadCollectionTest {
                         .stream()
                         .filter(e -> e.contains("Y"))
                         .limit(5))
-                .map(e -> e.replaceAll("Y", "+-+").replaceAll("7", "-+-"))
+                .map(e -> e.replaceAll("Y", "+-+").replace(" 7", "-+-"))
                 .collect(Collectors.toList());
 
         assertEquals(nouvelleBc.affBadCollection(), String.join("\n", nouvelleC));

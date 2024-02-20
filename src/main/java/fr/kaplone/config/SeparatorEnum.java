@@ -9,7 +9,7 @@ public enum SeparatorEnum {
     END_OF_TRANSMISSION(4),
     INQUIRY(5),
     ACKNOWLEDGE(6),
-    BELL(7);
+    BELL(77);
 
     private int value;
 

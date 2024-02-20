@@ -24,7 +24,7 @@ public class BadIterator<E> implements Iterator<E> {
         String s;
         if (idx > -1){
             s = state.substring(0, idx);
-            state = state.substring(idx + 1);
+            state = state.substring(idx + 2);
         }
         else {
             s = state;

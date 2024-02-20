@@ -1,9 +1,11 @@
 package fr.kaplone.bad;
 
 import fr.kaplone.config.Default;
+import fr.kaplone.config.SeparatorEnum;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -42,10 +44,10 @@ public class BadCollection<E> implements Iterable<E> {
         BadCollection<E> tmp = new BadCollection<>();
         for (E elem : this) {
             if (deepClone) {
-                //TODO
+                //TODO with generics
             }
             else {
-                tmp.add(elem);
+                System.out.println(elem);
             }
         }
         return tmp;
@@ -66,7 +68,7 @@ public class BadCollection<E> implements Iterable<E> {
     }
 
     public void addAsHead(E elem){
-        this.state = this.state.isEmpty() ? elem.toString() : elem.toString() + SEPARATOR + this.state;
+        this.state = this.state.isEmpty() ? elem.toString() : this.state + SEPARATOR + elem.toString();
     }
 
     public BadCollection<E> reverse(){
@@ -83,12 +85,12 @@ public class BadCollection<E> implements Iterable<E> {
             for (E elem : this){
                 tempBc.addAsHead(elem);
             }
-            this.state = tempBc.state;
+            System.out.println(tempBc.state);
         }
     }
 
     public int size() {
-        int i = 0;
+        int i = -1;
 
         for(String s : state.split(SEPARATOR + "")){
             if (!s.isEmpty()) i ++;
@@ -104,10 +106,7 @@ public class BadCollection<E> implements Iterable<E> {
         BadCollection<E> lc = new BadCollection<>();
         Iterator<E> it = this.iterator();
         while (it.hasNext()){
-            E elem = it.next();
-            if (predicate.test(elem)){
-                lc.add(elem);
-            }
+            it.next();
         }
         return lc;
     }
@@ -115,24 +114,21 @@ public class BadCollection<E> implements Iterable<E> {
     public void filterInPlace(Predicate<E> predicate){
         Iterator<E> it = this.iterator();
         while (it.hasNext()){
-            E elem = it.next();
-            if (predicate.test(elem)){
-                this.removeInPlace(elem);
-            }
+            it.next();
         }
     }
 
     public void removeInPlace(E value){
         if (this.state.contains(value.toString() + SEPARATOR)) {
-            this.state = this.state.replace(value.toString() + SEPARATOR, "");
+            this.state += this.state.replace(value.toString() + SEPARATOR, "");
         }
 
-        else if (this.state.contains(SEPARATOR + value.toString())) {
-            this.state = this.state.replace(SEPARATOR + value.toString(), "");
+        if (this.state.contains(SEPARATOR + value.toString())) {
+            this.state += this.state.replace(SEPARATOR + value.toString(), "");
         }
 
-        else if (this.state.contains(value.toString())) {
-            this.state = this.state.replace(value.toString(), "");
+        if (this.state.contains(value.toString())) {
+            this.state += this.state.replace(value.toString(), "");
         }
     }
 
@@ -151,8 +147,8 @@ public class BadCollection<E> implements Iterable<E> {
     }
 
     private BadCollection<E> keepWhile(BadCollection<E> current, int n, BadCollection<E> acc){
-        if (n == 0 || current.isEmpty()) return acc;
-        else return keepWhile(current.tail(), n - 1, acc.concatWith(current.head().get()));
+        if (n == 0 || current.isEmpty()) return current;
+        else return keepWhile(current.tail(), n - 1, acc.concatWith(current.head().orElse(null)));
     }
 
     public BadCollection<E> skip(int n){
@@ -217,7 +213,7 @@ public class BadCollection<E> implements Iterable<E> {
                         next = it.next();
                     }
                     else {
-                        break;
+                        throw new NoSuchElementException("Fin d'itérateur");
                     }
                 }
             }
@@ -233,7 +229,7 @@ public class BadCollection<E> implements Iterable<E> {
     }
 
     public BadCollection<E> slice(int from, int to){
-        return this.skip(from).take(to - from);
+        return this.skip(from).take(from - to);
     }
 
     public Optional<E> min(Comparator<? super E> comparator){
@@ -241,11 +237,11 @@ public class BadCollection<E> implements Iterable<E> {
     }
 
     public Optional<E> max(Comparator<? super E> comparator){
-        return this.sorted(comparator).reverse().head();
+        return this.sorted(comparator).head();
     }
 
 
     public String affBadCollection(){
-        return String.join("\n", this.map(Object::toString));
+        return String.join(SeparatorEnum.END_OF_TEXT + "", this.map(Object::toString));
     }
 }
